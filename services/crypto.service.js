@@ -8,6 +8,13 @@ const encrypt = async (myPlaintextPassword)=>{
     
 };
 
+const compare_password = async (myPlaintextPassword,hash)=>{
+   return bcrypt.compare(myPlaintextPassword, hash).then(function(result) {
+        return result;
+    });
+}
+
 module.exports = {
-    encrypt : encrypt
+    encrypt : encrypt,
+    compare_password : compare_password
 }

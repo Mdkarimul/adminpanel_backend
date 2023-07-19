@@ -1,13 +1,22 @@
 const express  = require("express");
 const router = express.Router();
 const adminController = require("../controller/admin.controller");
+const { request, response } = require("../app");
 
 router.get("/:query",(request,response)=>{
     adminController.getAdmin(request,response);
 });
 
-router.post("/",(request,response)=>{
+router.post("/signup",(request,response)=>{
      adminController.createAdmin(request,response);
+});
+
+router.post("/login",(request,response)=>{
+    adminController.loginAdmin(request,response);
+});
+
+router.post("/verify",(request,response)=>{
+    adminController.verify_user(request,response);
 });
 
 router.put("/",(request,response,next)=>{
