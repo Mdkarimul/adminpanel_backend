@@ -4,9 +4,9 @@ const router = express.Router();
 const adminController = require("../controller/admin.controller");
 
 
-router.get("/:query",async (request,response)=>{
-    //  response.json("karimul");
-        adminController.getAdmin(request,response);
+router.post("/", adminController.check_bearer_token, (request,response)=>{
+  console.log(request);
+  response.json("karimul category");
 });
 
 module.exports = router;

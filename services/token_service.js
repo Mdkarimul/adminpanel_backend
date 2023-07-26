@@ -13,12 +13,11 @@ const create_token = (data)=>{
 }
 
 const verify_token = (token)=>{
-  
 return JWT.verify(token,process.env.SECRET,(error,success)=>{
    if(error){
     return {message:error.message}
    }else{
-    return {message:"User authenticated",token:success}
+    return {message:"User authenticated","token":success.token}
    }
 });
 }

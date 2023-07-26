@@ -7,7 +7,7 @@ const cors = require('cors');
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 const adminRouter = require("./routes/admin");
-const privateAdminRouter = require("./routes/admin.private");
+const adminCategory = require("./routes/admin.category");
 
 var app = express();
 
@@ -23,7 +23,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(cors());
 
-app.use("/api/private/admin",privateAdminRouter);
+app.use("/api/admin/category",adminCategory);
 app.use("/admin",adminRouter);
 app.use("/",indexRouter);
 app.use('/users',usersRouter);

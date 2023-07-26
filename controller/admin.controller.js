@@ -1,8 +1,8 @@
 const dbService = require("../services/db.service");
 const bcryptService = require("../services/crypto.service");
 const tokenService = require("../services/token_service");
-const { response } = require("../app");
-const { verify } = require("jsonwebtoken");
+
+
 
 
 const createAdmin = async (request,response)=>{
@@ -28,14 +28,14 @@ const createAdmin = async (request,response)=>{
 
 
 const loginAdmin =async (request,response)=>{
+
           const form_data = request.body;
          const username_check = await check_admin(form_data.admin_username_login);
          if(username_check){
          const check_pass = await bcryptService.compare_password(form_data.password_login,username_check.password)
           if(check_pass){
-            // console.log(username_check);
-             const token= await tokenService.create_token(username_check);
-            // console.log(token);
+             
+             const token= await tokenService.create_token({admin_username:username_check.admin_username,company_name:username_check.company_name});
             admin_response(response,"Login success",200,"success",token);
 
           }else{
@@ -54,32 +54,54 @@ const loginAdmin =async (request,response)=>{
    check_admin = async (username)=>{
     const query = {
           "admin_username": username
-       }
+           }
       const check_user = await  dbService.checkAdmin(query);
       return check_user;
       // check_user != null ? (username ?   "karimul" : : admin_register();
     }
 
+    //send response to front-end
     const admin_response  = async (response,message,status,type,token_data="")=>{
       response.status(status);
       response.json({"notice":message,"res_type":type,"token":token_data});
       }
 
 
-const verify_user =async (request,response)=>{
+const verify_user = async (request,response)=>{
 
-        const token = request.body.token;
-        const  token_response = await tokenService.verify_token(token);
-         console.log(token_response.message);
-         if(token_response.message=="invalid token"){
-            response.json({message:"User not authenticated !"});
-            response.status(401);
+  
+         const  token_response = await tokenService.verify_token(request.token);
+          if(token_response.message=="invalid token"){
+             response.json({message:"User not authenticated !"});
+             response.status(401);
+           }
+           else if(token_response.message=="User authenticated"){
+               const new_token_response = await tokenService.create_token(token_response.token);
+               response.json({message:"User authenticated !",token:new_token_response}).status(200);
           }
-          else if(token_response.message=="User authenticated"){
-              const new_token_response =  tokenService.create_token(token_response.token);
-              response.json({message:"User authenticated !",token:new_token_response}).status(200);
-         }
-      
+       
+}
+
+
+function check_bearer_token (request,response,next){
+       
+   const bearerHerder = request.headers.authorization;
+  if(typeof bearerHerder !== 'undefined'){
+
+  const bearer = bearerHerder.split(' ');
+  const bearerToken = bearer[1];
+  request.token = bearerToken;
+   next();
+}else{
+  response.json({message:"User not authenticated !"});
+  response.status(403);
+} 
+
+}
+
+
+const getAdmin  = async (request,response)=>{
+       
 }
 
 
@@ -92,5 +114,7 @@ const verify_user =async (request,response)=>{
 module.exports = { 
     createAdmin : createAdmin,
     verify_user :verify_user,
-    loginAdmin:loginAdmin
+    loginAdmin:loginAdmin,
+    getAdmin : getAdmin,
+    check_bearer_token:check_bearer_token
 }
