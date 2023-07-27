@@ -10,7 +10,7 @@ async function main() {
 
 //require all model to execute here
 const adminModel = require("../model/admin.model");
-
+const createCategoryModel = require("../model/createCategory.model");
 
 
 
@@ -27,9 +27,27 @@ const checkAdmin = async (data)=>{
 }
 
 
+//create category section
+const createCategory = async (data)=>{
+ const category = new createCategoryModel(data);
+ const success_res = category.save();
+  console.log(success_res);
+}
+
+const checkCategory = async (data)=>{
+  const category_model = createCategoryModel;
+  const data_res = await category_model.findOne(data);
+  console.log(data_res);
+   return data_res;
+ 
+}
+
+
 module.exports = {
     createAdmin : createAdmin,
-    checkAdmin : checkAdmin
+    checkAdmin : checkAdmin,
+    createCategory : createCategory,
+    checkCategory : checkCategory
 }
 
 
