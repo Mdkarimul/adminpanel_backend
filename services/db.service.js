@@ -31,15 +31,19 @@ const checkAdmin = async (data)=>{
 const createCategory = async (data)=>{
  const category = new createCategoryModel(data);
  const success_res = category.save();
-  console.log(success_res);
 }
+
 
 const checkCategory = async (data)=>{
   const category_model = createCategoryModel;
   const data_res = await category_model.findOne(data);
-  console.log(data_res);
    return data_res;
- 
+}
+
+const getCategory = async ()=>{
+  const category_model = createCategoryModel;
+  const data_res = await category_model.find({});
+   return data_res;
 }
 
 
@@ -47,7 +51,9 @@ module.exports = {
     createAdmin : createAdmin,
     checkAdmin : checkAdmin,
     createCategory : createCategory,
-    checkCategory : checkCategory
+    checkCategory : checkCategory,
+    getCategory :getCategory
+
 }
 
 

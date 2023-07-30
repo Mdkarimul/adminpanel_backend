@@ -8,4 +8,10 @@ router.post("/", adminController.check_bearer_token, (request,response)=>{
     adminCategoryControl.create_category(request,response);
 });
 
+router.get("/", adminController.check_bearer_token, (request,response)=>{
+    adminCategoryControl.get_category(request,response);
+});
+
+
+
 module.exports = router;

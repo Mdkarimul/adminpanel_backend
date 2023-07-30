@@ -21,7 +21,16 @@ const create_category = async (request,response)=>{
       admin_response(response,"Category not created ",401,"failed",null);
     }
    }
+}
+
+
+const get_category = async (request,response)=>{
+    
+
+    const all_category =await dbService.getCategory();
+      admin_response(response,all_category,200,"success",null); 
   
+   
 }
 
 
@@ -36,5 +45,6 @@ const create_category = async (request,response)=>{
 
 
 module.exports = {
-  create_category :create_category
+  create_category :create_category,
+  get_category : get_category
 }
