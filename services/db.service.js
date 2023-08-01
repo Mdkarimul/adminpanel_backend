@@ -11,6 +11,7 @@ async function main() {
 //require all model to execute here
 const adminModel = require("../model/admin.model");
 const createCategoryModel = require("../model/createCategory.model");
+const { query } = require('express');
 
 
 
@@ -46,13 +47,27 @@ const getCategory = async ()=>{
    return data_res;
 }
 
+const update_category = async (id,data)=>{
+  const category_model = createCategoryModel;
+  const data_res = await category_model.findByIdAndUpdate(id,data);
+  return data_res;
+}
+
+const deleteCategory = async (id)=>{
+ const category_model = createCategoryModel;
+ const data_res = await category_model.findByIdAndDelete(id);
+ return data_res;
+}
+
 
 module.exports = {
     createAdmin : createAdmin,
     checkAdmin : checkAdmin,
     createCategory : createCategory,
     checkCategory : checkCategory,
-    getCategory :getCategory
+    update_category:update_category,
+    getCategory : getCategory,
+    deleteCategory : deleteCategory
 
 }
 

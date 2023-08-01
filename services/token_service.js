@@ -24,5 +24,5 @@ return JWT.verify(token,process.env.SECRET,(error,success)=>{
 
 module.exports = {
  create_token : create_token,
- verify_token
+ verify_token : verify_token
 }

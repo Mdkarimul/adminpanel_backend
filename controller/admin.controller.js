@@ -83,21 +83,7 @@ const verify_user = async (request,response)=>{
 }
 
 
-function check_bearer_token (request,response,next){
-       
-   const bearerHerder = request.headers.authorization;
-  if(typeof bearerHerder !== 'undefined'){
 
-  const bearer = bearerHerder.split(' ');
-  const bearerToken = bearer[1];
-  request.token = bearerToken;
-   next();
-}else{
-  response.json({message:"User not authenticated !"});
-  response.status(403);
-} 
-
-}
 
 
 const getAdmin  = async (request,response)=>{
@@ -116,5 +102,5 @@ module.exports = {
     verify_user :verify_user,
     loginAdmin:loginAdmin,
     getAdmin : getAdmin,
-    check_bearer_token:check_bearer_token
+
 }
