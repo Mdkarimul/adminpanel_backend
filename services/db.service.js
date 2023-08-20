@@ -12,7 +12,7 @@ async function main() {
 const adminModel = require("../model/admin.model");
 const createCategoryModel = require("../model/createCategory.model");
 const { query } = require('express');
-
+const createSubCategory = require("../model/createSubCategory.model");
 
 
 const createAdmin = async (data)=>{
@@ -32,6 +32,12 @@ const checkAdmin = async (data)=>{
 const createCategory = async (data)=>{
  const category = new createCategoryModel(data);
  const success_res = category.save();
+}
+
+//create sub category
+const createsubCategory = async (data)=>{
+const sub_category = new createSubCategory(data);
+const success_res = sub_category.save();
 }
 
 
@@ -67,7 +73,8 @@ module.exports = {
     checkCategory : checkCategory,
     update_category:update_category,
     getCategory : getCategory,
-    deleteCategory : deleteCategory
+    deleteCategory : deleteCategory,
+    createsubCategory : createsubCategory
 
 }
 

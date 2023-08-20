@@ -5,22 +5,31 @@ const dbService  = require("../services/db.service");
 
 const create_category = async (request,response)=>{
   const form_data =  request.body;
-  const categoryNameWithoutSpaces = await form_data.category_name.replace(/\s+/g, '');
+  const categoryNameWithoutSpaces = await form_data.category_name;
   form_data.category_name = categoryNameWithoutSpaces.trim();
-
+  console.log(form_data);
   const check_category = await dbService.checkCategory({category_name:form_data.category_name})
    if(check_category){
-
+   console.log(check_category);
     admin_response(response,"Category name already exit ",401,"failed",null);
      
-   }else{
-    try {
-      const db_res = await dbService.createCategory(form_data);
-      admin_response(response,"Category created successfully ",200,"success",null); 
-    }catch(error){
-      admin_response(response,"Category not created ",401,"failed",null);
-    }
    }
+    else if(form_data.main_category==="Select category"){
+     try {
+       const db_res = await dbService.createCategory(form_data);
+      admin_response(response,"Category created successfully ",200,"success",null); 
+     }catch(error){
+       admin_response(response,"Category not created ",401,"failed",null);
+     }
+    }else{
+      try {
+        const db_res = await dbService.createSubCategory(form_data);
+       admin_response(response,"Category created successfully ",200,"success",null); 
+      }catch(error){
+        admin_response(response,"Category not created ",401,"failed",null);
+      }
+    }
+    
 }
 
 
